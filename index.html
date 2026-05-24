@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>じゃんけん</title>
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet" />
+  <link rel="stylesheet" href="css/janken.css">
+</head>
+
+<body>
+  <main>
+
+    <section>
+      <h1>じゃ～んけ～ん</h1>              
+    </section>
+
+<section>
+      <button id="kantan">かんたん</button>
+      <button id="futsuu">ふつう</button>
+      <button id="muzukashii">むずかしい</button>
+    </section>
+
+    <section>
+       <p id="judge"></p>        
+       <p id="computer">？？</p>    
+    </section>
+
+    <section>
+       <p id="judge"></p>
+    </section>
+
+    <section>
+       <p id="result">？？</p>    
+    </section>
+
+    <section>
+      <button id="gu">グー</button>
+      <button id="choki">チョキ</button>
+      <button id="pa">パー</button>
+    </section>
+
+    <section>
+        <button id="again">もう一回</button>
+      </section>
+    
+      
+  </main>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <script>
+ // ここにJavaScriptコードを記述します
+  // === コンピュータの手を高速で切り替えるアニメーション ===
+    let i = 0;
+
+    // アニメの中身を「cycleHand」という関数に切り出す（あとで再利用するため）
+    function cycleHand() {
+      // 0→✊、1→✌️、2→✋ の順で表示を切り替える
+      if (i === 0) {
+        $(`#computer`).text("✊");
+      } else if (i === 1) {
+        $(`#computer`).text("✌️");
+      } else if (i === 2) {
+        $(`#computer`).text("✋");
+      }
+      i = i + 1;
+      if (i >= 3) {
+        i = 0;  // 3になったら0に戻す
+      }
+    }
+
+    // 80ミリ秒ごとに cycleHand を実行
+    let speed = 80; // アニメの速度（ミリ秒）
+    let timer = setInterval(cycleHand, speed);
+
+$('#kantan').on('click', function() {
+  speed = 600;
+  clearInterval(timer);
+  timer = setInterval(cycleHand, speed);
+});
+    
+    $('#futsuu').on('click', function() {
+  speed = 400;
+  clearInterval(timer);
+  timer = setInterval(cycleHand, speed);
+});
+
+$('#muzukashii').on('click', function() {
+  speed = 80;
+  clearInterval(timer);
+  timer = setInterval(cycleHand, speed);
+});
+
+ // === グーボタンを押した時の処理 ===
+  $(`#gu`).on(`click`, function () {
+    clearInterval(timer);                          // アニメ停止
+    $(`#result`).text("✊");                       // 自分の手を表示
+    const computerHand = $(`#computer`).text();    // コンピュータの手を読み取る
+
+    // 勝敗を判定
+    if (computerHand === "✊") {
+      $(`h1`).text("あ～いこ～で");
+      timer = setInterval(cycleHand, 80);
+    } else if (computerHand === "✌️") {
+      $(`#judge`).html(`<span class="winner-label">Winner!! 🎉</span>`);
+    } else if (computerHand === "✋") {
+      $(`#judge`).text(`loser`);
+      $(`#result`).css(`opacity`, 0.5);
+    }
+  });
+
+  // === チョキボタンを押した時の処理 ===
+  $(`#choki`).on(`click`, function () {
+    clearInterval(timer);                          // アニメ停止
+    $(`#result`).text("✌️");                       // 自分の手を表示
+    const computerHand = $(`#computer`).text();    // コンピュータの手を読み取る
+
+    // 勝敗を判定
+    if (computerHand === "✊") {
+      $(`#result`).prepend(`loser<br>`);
+      $(`#result`).css(`opacity`, 0.5);
+    } else if (computerHand === "✌️") {
+      $(`h1`).text("あ～いこ～で");
+      timer = setInterval(cycleHand, 80);
+    } else if (computerHand === "✋") {
+      $(`#result`).prepend(`<span class="winner-label">Winner!! 🎉</span><br>`);
+    }
+  });
+
+  // === パーボタンを押した時の処理 ===
+  $(`#pa`).on(`click`, function () {
+    clearInterval(timer);                          // アニメ停止
+    $(`#result`).text("✋");                       // 自分の手を表示
+    const computerHand = $(`#computer`).text();    // コンピュータの手を読み取る
+
+    // 勝敗を判定
+    if (computerHand === "✊") {
+      $(`#result`).prepend(`<span class="winner-label">Winner!! 🎉</span><br>`);
+    } else if (computerHand === "✌️") {
+      $(`#result`).prepend(`loser<br>`);
+      $(`#result`).css(`opacity`, 0.5);
+    } else if (computerHand === "✋") {
+      $(`h1`).text("あ～いこ～で");
+      timer = setInterval(cycleHand, speed
+      );
+    }
+  });
+
+ // === 「もう一回」ボタンの処理 ===
+    $(`#again`).on(`click`, function () {
+      location.reload();
+    });
+
+  </script>   
+
+
+
+</body>
+
+</html>

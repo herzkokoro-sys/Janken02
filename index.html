@@ -23,8 +23,7 @@
     </section>
 
     <section>
-       <p id="judge"></p>        
-       <p id="computer">？？</p>    
+       <p id="computer">？？</p>
     </section>
 
     <section>
@@ -93,6 +92,11 @@ $('#muzukashii').on('click', function() {
   timer = setInterval(cycleHand, speed);
 });
 
+ // === グー・チョキ・パーを押せなくする関数 ===
+  function lockHands() {
+    $(`#gu, #choki, #pa, #kantan, #futsuu, #muzukashii`).prop(`disabled`, true);
+  }
+
  // === グーボタンを押した時の処理 ===
   $(`#gu`).on(`click`, function () {
     clearInterval(timer);                          // アニメ停止
@@ -105,9 +109,11 @@ $('#muzukashii').on('click', function() {
       timer = setInterval(cycleHand, 80);
     } else if (computerHand === "✌️") {
       $(`#judge`).html(`<span class="winner-label">Winner!! 🎉</span>`);
+      lockHands();
     } else if (computerHand === "✋") {
       $(`#judge`).text(`loser`);
       $(`#result`).css(`opacity`, 0.5);
+      lockHands();
     }
   });
 
@@ -119,13 +125,15 @@ $('#muzukashii').on('click', function() {
 
     // 勝敗を判定
     if (computerHand === "✊") {
-      $(`#result`).prepend(`loser<br>`);
+      $(`#judge`).text(`loser`);
       $(`#result`).css(`opacity`, 0.5);
+      lockHands();
     } else if (computerHand === "✌️") {
       $(`h1`).text("あ～いこ～で");
       timer = setInterval(cycleHand, 80);
     } else if (computerHand === "✋") {
-      $(`#result`).prepend(`<span class="winner-label">Winner!! 🎉</span><br>`);
+      $(`#judge`).html(`<span class="winner-label">Winner!! 🎉</span>`);
+      lockHands();
     }
   });
 
@@ -137,10 +145,12 @@ $('#muzukashii').on('click', function() {
 
     // 勝敗を判定
     if (computerHand === "✊") {
-      $(`#result`).prepend(`<span class="winner-label">Winner!! 🎉</span><br>`);
+      $(`#judge`).html(`<span class="winner-label">Winner!! 🎉</span>`);
+      lockHands();
     } else if (computerHand === "✌️") {
-      $(`#result`).prepend(`loser<br>`);
+      $(`#judge`).text(`loser`);
       $(`#result`).css(`opacity`, 0.5);
+      lockHands();
     } else if (computerHand === "✋") {
       $(`h1`).text("あ～いこ～で");
       timer = setInterval(cycleHand, speed

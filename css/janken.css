@@ -15,7 +15,7 @@ main {
 }
 
 section {
-  height: calc(100vh/5);
+  height: calc(100vh/8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,8 +25,14 @@ section {
     font-size: 150px;
   }
 
+/* 1. 手の絵文字があるセクション（親要素）の基準を作ります */
+section.result-container {
+  position: relative; /* 自由配置の基準点にする */
+}
+
   #result {
     font-size: 150px;
+    text-align: center;
   }
 
    .winner-label {
